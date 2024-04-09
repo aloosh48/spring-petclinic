@@ -15,7 +15,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Run Maven build without running tests
+                // Runs Maven build without running tests
                 sh 'mvn clean package -DskipTests'
             }
         }

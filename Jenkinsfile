@@ -23,11 +23,13 @@ pipeline {
 	stage('SonarQube Analysis') {
             steps {
         	withSonarQubeEnv('MySonarQubeServer') {
-	            sh 'mvn clean verify sonar:sonar \
+	            sh """
+                    mvn clean verify sonar:sonar \
                     -Dsonar.projectKey=petclinic \
                     -Dsonar.projectName='Spring PetClinic' \
                     -Dsonar.host.url=http://localhost:9000 \
-                    -Dsonar.token=sqp_fb22a2fd97ba88b4c15b3c47f7a9a353b94019f2'
+                    -Dsonar.token=sqp_fb22a2fd97ba88b4c15b3c47f7a9a353b94019f2
+		    """
         	}
     	    }
         }

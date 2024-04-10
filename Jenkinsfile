@@ -19,6 +19,14 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
+	
+	stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv() {
+                    sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=petclinic -Dsonar.projectName='Spring PetClinic'"
+                }
+            }
+        }
 
         stage('Test') {
             steps {

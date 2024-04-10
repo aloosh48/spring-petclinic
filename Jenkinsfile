@@ -22,7 +22,7 @@ pipeline {
 	
 	stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('petclinic') {
+                withSonarQubeEnv('MySonarQubeServer') {
                     sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=petclinic -Dsonar.projectName='Spring PetClinic'"
                 }
             }

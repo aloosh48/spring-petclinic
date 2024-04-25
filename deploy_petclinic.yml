@@ -1,0 +1,23 @@
+- hosts: server2
+  become: yes  # Ensures you have the necessary permissions to execute tasks
+  tasks:
+    - name: Ensure Java is installed
+      apt:
+        name: openjdk-11-jre-headless  # Adjust Java version as necessary
+        state: present
+        update_cache: yes
+
+    - name: Ensure the application directory exists
+      file:
+        path: /opt/petclinic
+        state: directory
+
+    - name: Transfer Petclinic JAR to Server 2
+      copy:
+        src: "/home/alaa/spring-petclinic/target/spring-petclinic-3.2.0-SNAPSHOT.jar"
+        dest: "/opt/petclinic/spring-petclinic-3.2.0-SNAPSHOT.jar"
+
+    - name: Start Petclinic Application
+      shell: "nohup java -jar /opt/petclinic/spring-petclinic-3.2.0-SNAPSHOT.jar > /var/log/petclinic.log 2>&1 &"
+      async: 10
+      poll: 0

@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        ANSIBLE_INVENTORY = "/home/alaa/spring-petclinic/library/ansible-inventory"
+        DEPLOY_SCRIPT_PATH = "/home/alaa/spring-petclinic/deploy_petclinic.yml"
+    } 
+
     tools {
         maven 'Maven'
         jdk 'JDK'
@@ -38,6 +43,18 @@ pipeline {
             steps {
                 // Runs the test phase separately to capture test results
                 sh 'mvn test'
+            }
+        }
+	
+        stage('Deploy) {
+            steps {
+                script {
+                    ansiblePlaybook(
+                        playbook: "${DEPLOY_SCRIPT_PATH}",
+                        inventory: "${ANSIBLE_INVENTORY}",
+                        credentialsId: 'ssh-credentials-id'
+                    )
+                }
             }
         }
     }
